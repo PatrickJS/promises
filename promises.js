@@ -1,4 +1,5 @@
 var Promises = function() {
+
   // promises state
   var State = {
     _PENDING:   0,
@@ -20,12 +21,12 @@ var Promises = function() {
         throw new Error('can\'t transition from current state: ' + state);
       }
 
-      // if second argument is't given at all (passing undefined allowed)
+      // if the second argument is't given at all (passing undefined allowed)
       if (state === State._FULFILLED && arguments.length < 2) {
         throw new Error('transition to fulfilled must have a non \'null\' value');
       }
 
-      // if  null reason is passed in
+      // if a null reason is passed in
       if (state === State._REJECTED && value === null) {
         throw new Error('transition to rejected must have a non \'null\' reason');
       }
@@ -33,6 +34,7 @@ var Promises = function() {
       // change state
       this.state = state;
       this.value = value;
+
       return this.state;
     },
     then: function(onFulfilled, onRejected) {
