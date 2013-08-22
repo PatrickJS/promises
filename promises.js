@@ -54,7 +54,6 @@ var Promises = function() {
       return promise;
     },
     resolve: function() {
-      var func = function() {};
 
       // check state if pending state
       if (this.state === State._PENDING) {
@@ -66,17 +65,19 @@ var Promises = function() {
         var obj = this.cache.shift();
 
         // get the function based on state
-        var fn = (typeof fn !== 'function') ?
-                                  fn = func :
-          (this.state === State._FULFILLED) ?
-                                obj.fulfill :
-                                obj.reject;
+        var fn = (this.state === State._FULFILLED) ?
+                                       obj.fulfill :
+                                        obj.reject;
+        if (typeof fn !== 'function') {
+          obj.promise.changeState(this.state, this.value);
+        } else {
+          // fulfill promise with a value or reject with an error
+          try {
+            obj.promise.changeState(State._FULFILLED, fn(this.value));
+          } catch (error) {
+            obj.promise.changeState(State._REJECTED,  error);
+          }
 
-        // fulfill promise with a value or reject with an error
-        try {
-          obj.promise.changeState(State._FULFILLED, fn(this.value));
-        } catch (error) {
-          obj.promise.changeState(State._REJECTED,  error);
         }
 
       }
