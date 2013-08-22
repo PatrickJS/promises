@@ -28,7 +28,7 @@ var Promises = function() {
       }
 
       // if a null reason is passed in
-      if (state === State._REJECTED && value === null) {
+      if (state === State._REJECTED && arguments.length < 2) {
         return new Error('transition to rejected must have a non \'null\' reason');
       }
 
@@ -55,7 +55,7 @@ var Promises = function() {
       // initialize array for cache
       self.cache = self.cache || [];
 
-      self.async(function() {
+      this.async(function() {
         self.cache.push({
           fulfill: onFulfilled,
           reject:  onRejected,
@@ -75,7 +75,7 @@ var Promises = function() {
       }
 
       // for each 'then'
-      while(this.cache && this.cache.length) {
+      while (this.cache && this.cache.length) {
         var obj = this.cache.shift();
 
         // get the function based on state
@@ -105,8 +105,7 @@ var Promises = function() {
               obj.promise.changeState(State._FULFILLED, value);
             } // end if promise is returned
 
-            obj.promise.changeState(State._FULFILLED, fn(this.value));
-
+          // deal with error thrown
           } catch (error) {
             obj.promise.changeState(State._REJECTED, error);
           }
