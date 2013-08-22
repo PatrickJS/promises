@@ -50,6 +50,8 @@ var Promises = function() {
 
       // chaining promises
       return promise;
+    },
+    resolve: function() {
     }
 
 
