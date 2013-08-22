@@ -88,16 +88,19 @@ var Promises = function() {
             // deal with other value returned
             } else {
               obj.promise.changeState(State._FULFILLED, value);
-            }
+            } // end if promise is returned
+
             obj.promise.changeState(State._FULFILLED, fn(this.value));
+
           } catch (error) {
             obj.promise.changeState(State._REJECTED, error);
           }
 
-        }
+        } // end else typeof 'function'
 
-      }
-    }
+      } // end while this.cache
+
+    } // end resolve method
 
 
   };
