@@ -35,20 +35,27 @@ var Promises = function() {
       // change state
       this.state = state;
       this.value = value;
+      this.resolve();
 
       return this.state;
     },
+    async: function(fn) {
+      setTimeout(fn, 5);
+    },
     then: function(onFulfilled, onRejected) {
+      var promise = Object.create(Promises),
+          self    = this;
 
       // initialize array for cache
-      this.cache = this.cache || [];
+      self.cache = self.cache || [];
 
-      var promise = Object.create(Promises);
-
-      this.cache.push({
-        fulfill: onFulfilled,
-        reject:  onRejected,
-        promise: promise
+      self.async(function() {
+        self.cache.push({
+          fulfill: onFulfilled,
+          reject:  onRejected,
+          promise: promise
+        });
+        self.resolve();
       });
 
       // chaining promises
@@ -101,11 +108,9 @@ var Promises = function() {
 
       } // end while this.cache
 
-    }, // end resolve method
-    async: function(fn) {
-      setTimeout(fn, 5);
-    }
-
+    } // end resolve method
   }; // end Promises
 
+
+  return Object.create(Promise);
 };
