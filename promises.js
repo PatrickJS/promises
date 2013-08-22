@@ -14,22 +14,22 @@ var Promises = function() {
 
       // catch changing to state (perhaps trying to change value)
       if (this.state === state) {
-        throw new Error('can\'t transition to same state: ' + state);
+        return new Error('can\'t transition to same state: ' + state);
       }
 
       // trying to change out of fulfilled or rejected
       if (this.state === State._FULFILLED || this.state === State._REJECTED) {
-        throw new Error('can\'t transition from current state: ' + state);
+        return new Error('can\'t transition from current state: ' + state);
       }
 
       // if the second argument is't given at all (passing undefined allowed)
       if (state === State._FULFILLED && arguments.length < 2) {
-        throw new Error('transition to fulfilled must have a non \'null\' value');
+        return new Error('transition to fulfilled must have a non \'null\' value');
       }
 
       // if a null reason is passed in
       if (state === State._REJECTED && value === null) {
-        throw new Error('transition to rejected must have a non \'null\' reason');
+        return new Error('transition to rejected must have a non \'null\' reason');
       }
 
       // change state
@@ -43,10 +43,10 @@ var Promises = function() {
       setTimeout(fn, 5);
     },
     fulfill: function(value) {
-      this.changeState(State.FULFILLED, value);
+      this.changeState(State._FULFILLED, value);
     },
     reject: function(reason) {
-      this.changeState(State.REJECTED, reason);
+      this.changeState(State._REJECTED, reason);
     },
     then: function(onFulfilled, onRejected) {
       var promise = Object.create(Promises),
