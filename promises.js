@@ -33,6 +33,9 @@ var Promises = function() {
       this.state = state;
       this.value = value;
       return this.state;
+    },
+    then: function(onFulfilled, onRejected) {
+
     }
 
 
