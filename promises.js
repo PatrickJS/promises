@@ -42,6 +42,12 @@ var Promises = function() {
     async: function(fn) {
       setTimeout(fn, 5);
     },
+    fulfill: function(value) {
+      this.changeState(State.FULFILLED, value);
+    },
+    reject: function(reason) {
+      this.changeState(State.REJECTED, reason);
+    },
     then: function(onFulfilled, onRejected) {
       var promise = Object.create(Promises),
           self    = this;
@@ -76,6 +82,7 @@ var Promises = function() {
         var fn = (this.state === State._FULFILLED) ?
                                        obj.fulfill :
                                         obj.reject;
+
         if (typeof fn !== 'function') {
           obj.promise.changeState(this.state, this.value);
         } else {
@@ -112,5 +119,5 @@ var Promises = function() {
   }; // end Promises
 
 
-  return Object.create(Promise);
+  return Object.create(Promises);
 };
