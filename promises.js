@@ -100,9 +100,11 @@ var Promises = function() {
 
       } // end while this.cache
 
-    } // end resolve method
+    }, // end resolve method
+    async: function(fn) {
+      setTimeout(fn, 5);
+    }
 
-
-  };
+  }; // end Promises
 
 };
