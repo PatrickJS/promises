@@ -71,11 +71,27 @@ var Promises = function() {
         if (typeof fn !== 'function') {
           obj.promise.changeState(this.state, this.value);
         } else {
+
           // fulfill promise with a value or reject with an error
           try {
+
+            var value = fn(this.value);
+
+            // deal with promise returned
+            if (value && typeof value.then === 'function') {
+              value.then(function(value) {
+                obj.promise.changeState(State._FULFILLED, value);
+              }, function(reason) {
+                obj.promise.changeState(State._REJECTED, error);
+              });
+
+            // deal with other value returned
+            } else {
+              obj.promise.changeState(State._FULFILLED, value);
+            }
             obj.promise.changeState(State._FULFILLED, fn(this.value));
           } catch (error) {
-            obj.promise.changeState(State._REJECTED,  error);
+            obj.promise.changeState(State._REJECTED, error);
           }
 
         }
