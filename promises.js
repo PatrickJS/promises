@@ -1,4 +1,5 @@
 var Promises = function() {
+  'use strict';
 
   // promises state
   var State = {
