@@ -29,6 +29,7 @@ var Promises = function() {
       if (state === State._REJECTED && value === null) {
         throw new Error('transition to rejected must have a non \'null\' reason');
       }
+
       // change state
       this.state = state;
       this.value = value;
@@ -36,6 +37,19 @@ var Promises = function() {
     },
     then: function(onFulfilled, onRejected) {
 
+      // initialize array for cache
+      this.cache = this.cache || [];
+
+      var promise = Object.create(Promises);
+
+      this.cache.push({
+        fulfill: onFulfilled,
+        reject:  onRejected,
+        promise: promise
+      });
+
+      // chaining promises
+      return promise;
     }
 
 
