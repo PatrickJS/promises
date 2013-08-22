@@ -52,6 +52,12 @@ var Promises = function() {
       return promise;
     },
     resolve: function() {
+
+      // check state if pending state
+      if (this.state === State._PENDING) {
+        return false;
+      }
+
     }
 
 
