@@ -3,6 +3,8 @@ Promises
 
 [![Promises](http://img.youtube.com/vi/llDikI2hTtk/0.jpg)](http://www.youtube.com/watch?v=llDikI2hTtk)
 
+A promise represents a value that may not be available yet. The primary method for interacting with a promise is its <code>.then()</code> method.
+
 An example promise
 
 ```javascript
